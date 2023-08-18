@@ -1,0 +1,181 @@
+body {
+	font-family: "OpenSansRegular", Arial, sans-serif;
+	font-size: 16px;
+	background-repeat: repeat;
+	background-color: #323232;
+	color: #fafafa;
+	margin: 0 0 0 0;
+	padding: 40px 0 40px 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 10px 0 10px 0;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #888;
+	color: #fff;
+}
+h1 {
+	font-size: 3em;
+}
+h2 {
+	font-size: 2.5em;
+}
+h3 {
+	font-size: 1.8em;
+}
+
+.introduction {
+	max-width: 800px;
+	margin: auto;
+	padding: 0 20px;
+}
+
+button {
+	cursor: pointer;
+}
+
+.light-intro {
+	margin-bottom: 20px;
+}
+
+.light-all {
+	width: 400px;
+	height: 400px;
+	max-width: 90vw;
+	max-height: 90vw;
+	margin: auto;
+	text-align: center;
+}
+
+.light-game-info {
+	width: 400px;
+	max-width: 90vw;
+	min-height: 2em;
+	margin: auto;
+}
+
+.light-box {
+	box-sizing: border-box;
+	border: #111 solid 5px;
+	position: relative;
+	float: left;
+	background-color: #9e3232;
+	cursor: pointer;
+}
+.light-box:hover {
+	background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));
+	cursor: pointer;
+}
+
+.box-three {
+	width: 33%;
+	height: 33%;
+}
+
+.box-five {
+	width: 20%;
+	height: 20%;
+}
+
+.light-clicked {
+	background-color: #32a852;
+}
+
+.light-win .light-clicked {
+	background-color: #065e12;
+	
+	&:hover {
+		cursor: unset;
+		background-image: unset;
+	}
+}
+
+.light-timer {
+	margin-left: 0.4em;
+	float: left;
+	position: relative;
+}
+
+.light-buttons {
+	margin-right: 0.6em;
+    float: right;
+	position: relative;
+}
+
+.light-reset {
+	margin: 0.5em 0;
+}
+
+.no-border {
+	border: none;
+}
+
+.hidden {
+	display: none;
+}
+
+.top-pad {
+	padding-top: 1em;
+}
+
+.right-pad {
+	padding-right: 1em;
+}
+
+.bot-pad {
+	padding-bottom: 1em;
+}
+
+.left-pad {
+	padding-left: 1em;
+}
+
+.vert-pad {
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.hor-pad {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.no-pad {
+	padding: 0;
+}
+
+.no-margin {
+	margin: 0;
+}
+.no-margin-top {
+	margin-top: 0;
+}
+.no-margin-bot {
+	margin-bottom: 0;
+}
+.no-margin-left {
+	margin-left: 0;
+}
+.no-margin-right {
+	margin-right: 0;
+}
+
+.div-center {
+	margin: auto;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-justify {
+	text-align: justify;
+}

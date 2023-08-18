@@ -1,0 +1,130 @@
+<head>
+	<link rel="stylesheet" type="text/css" href="/style.css">
+	<script defer src="/lights-out.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<h1 class="text-center">Lights Out!</h1>
+	<div class="introduction">
+		<p>On this page you'll find 4 different variations of the game "Lights Out".<br>
+		The standard games use the "normal" expected rules:</p>
+
+		<li>Click a square to swap its state.</li>
+		<li>The directly adjacent squares (Top, Bottom, Left & Right) will also change their states.</li>
+			
+		<p>The modified games use the following rules:</p>
+			
+		<li>Click a square to swap its state.</li>
+		<li>The directly adjacent and diagonally adjacent squares will also change their states.</li>
+			
+		<p style="margin-bottom: 3em;">Both versions come with a 3x3 and a 5x5 board size as well as for fun, a "Bogo solve" button.
+		Bogo solve is named after the infamous "Bogosort" which is a joke sorting algorithm that works by randomly shuffling a list until it is sorted.
+		As such, you can probably guess that this button also randomly clicks elements until the game is solved. It's... questionably useful.<br>
+		Additionally, each game has a timer that starts upon changing the first square and stops when the game is solved.</p>
+	</div>
+
+	<h2 id="game-standard-3" class="text-center no-border no-margin-bot">3x3 Standard</h2>
+	<p class="text-center no-margin-top no-margin-bot" id="game-1-objective">Turn them all green.</p>
+	<div class="text-center">
+		<button class="light-reset" onclick="reset(1)">Reset</button>
+	</div>
+	<div id="game-1" class="light-all">
+		<div class="light-box box-three" id="1-1-1"></div><div class="light-box box-three" id="1-2-1"></div><div class="light-box box-three" id="1-3-1"></div>
+		<div class="light-box box-three" id="2-1-1"></div><div class="light-box box-three" id="2-2-1"></div><div class="light-box box-three" id="2-3-1"></div>
+		<div class="light-box box-three" id="3-1-1"></div><div class="light-box box-three" id="3-2-1"></div><div class="light-box box-three" id="3-3-1"></div>
+	</div>
+
+	<div class="light-game-info">
+		
+		<div class="light-timer">
+			<p class="no-margin" id="game-1-time-taken"><span id="game-1-time">0</span> seconds</p>
+		</div>
+		
+		<div id="game-1-buttons" class="light-buttons">
+			<button id="game-1-bogo" onclick="bogoSolve(1)">Bogo Solve</button>
+		</div>
+	</div>
+
+
+	<p><br><hr><br></p>
+
+
+	<h2 id="game-standard-5" class="text-center no-border no-margin-bot">5x5 Standard</h2>
+	<p class="text-center no-margin-top no-margin-bot" id="game-2-objective">Turn them all green.</p>
+	<div class="text-center">
+		<button class="light-reset" onclick="reset(2)">Reset</button>
+	</div>
+	<div id="game-2" class="light-all">
+		<div class="light-box box-five" id="1-1-2"></div><div class="light-box box-five" id="1-2-2"></div><div class="light-box box-five" id="1-3-2"></div><div class="light-box box-five" id="1-4-2"></div><div class="light-box box-five" id="1-5-2"></div>
+		<div class="light-box box-five" id="2-1-2"></div><div class="light-box box-five" id="2-2-2"></div><div class="light-box box-five" id="2-3-2"></div><div class="light-box box-five" id="2-4-2"></div><div class="light-box box-five" id="2-5-2"></div>
+		<div class="light-box box-five" id="3-1-2"></div><div class="light-box box-five" id="3-2-2"></div><div class="light-box box-five" id="3-3-2"></div><div class="light-box box-five" id="3-4-2"></div><div class="light-box box-five" id="3-5-2"></div>
+		<div class="light-box box-five" id="4-1-2"></div><div class="light-box box-five" id="4-2-2"></div><div class="light-box box-five" id="4-3-2"></div><div class="light-box box-five" id="4-4-2"></div><div class="light-box box-five" id="4-5-2"></div>
+		<div class="light-box box-five" id="5-1-2"></div><div class="light-box box-five" id="5-2-2"></div><div class="light-box box-five" id="5-3-2"></div><div class="light-box box-five" id="5-4-2"></div><div class="light-box box-five" id="5-5-2"></div>
+	</div>
+
+	<div class="light-game-info">
+		
+		<div class="light-timer">
+			<p class="no-margin" id="game-2-time-taken"><span id="game-2-time">0</span> seconds</p>
+		</div>
+		
+		<div id="game-2-buttons" class="light-buttons">
+			<button id="game-2-bogo" onclick="bogoSolve(2)">Bogo Solve</button>
+		</div>
+	</div>
+
+
+	<p><br><hr><br></p>
+
+
+	<h2 id="game-modified-3" class="text-center no-border no-margin-bot">3x3 Modified</h2>
+	<p class="text-center no-margin-top no-margin-bot" id="game-3-objective">Turn them all green.</p>
+	<div class="text-center">
+		<button class="light-reset" onclick="reset(3)">Reset</button>
+	</div>
+	<div id="game-3" class="light-all">
+		<div class="light-box box-three" id="1-1-3"></div><div class="light-box box-three" id="1-2-3"></div><div class="light-box box-three" id="1-3-3"></div>
+		<div class="light-box box-three" id="2-1-3"></div><div class="light-box box-three" id="2-2-3"></div><div class="light-box box-three" id="2-3-3"></div>
+		<div class="light-box box-three" id="3-1-3"></div><div class="light-box box-three" id="3-2-3"></div><div class="light-box box-three" id="3-3-3"></div>
+	</div>
+
+	<div class="light-game-info">
+		
+		<div class="light-timer">
+			<p class="no-margin" id="game-3-time-taken"><span id="game-3-time">0</span> seconds</p>
+		</div>
+		
+		<div id="game-3-buttons" class="light-buttons">
+			<button id="game-3-bogo" onclick="bogoSolve(3)">Bogo Solve</button>
+		</div>
+	</div>
+
+
+	<p><br><hr><br></p>
+
+
+	<h2 id="game-modified-5" class="text-center no-border no-margin-bot">5x5 Modified</h2>
+	<p class="text-center no-margin-top no-margin-bot" id="game-4-objective">Turn them all green.</p>
+	<div class="text-center">
+		<button class="light-reset" onclick="reset(4)">Reset</button>
+	</div>
+	<div id="game-4" class="light-all">
+		<div class="light-box box-five" id="1-1-4"></div><div class="light-box box-five" id="1-2-4"></div><div class="light-box box-five" id="1-3-4"></div><div class="light-box box-five" id="1-4-4"></div><div class="light-box box-five" id="1-5-4"></div>
+		<div class="light-box box-five" id="2-1-4"></div><div class="light-box box-five" id="2-2-4"></div><div class="light-box box-five" id="2-3-4"></div><div class="light-box box-five" id="2-4-4"></div><div class="light-box box-five" id="2-5-4"></div>
+		<div class="light-box box-five" id="3-1-4"></div><div class="light-box box-five" id="3-2-4"></div><div class="light-box box-five" id="3-3-4"></div><div class="light-box box-five" id="3-4-4"></div><div class="light-box box-five" id="3-5-4"></div>
+		<div class="light-box box-five" id="4-1-4"></div><div class="light-box box-five" id="4-2-4"></div><div class="light-box box-five" id="4-3-4"></div><div class="light-box box-five" id="4-4-4"></div><div class="light-box box-five" id="4-5-4"></div>
+		<div class="light-box box-five" id="5-1-4"></div><div class="light-box box-five" id="5-2-4"></div><div class="light-box box-five" id="5-3-4"></div><div class="light-box box-five" id="5-4-4"></div><div class="light-box box-five" id="5-5-4"></div>
+	</div>
+
+	<div class="light-game-info">
+		
+		<div class="light-timer">
+			<p class="no-margin" id="game-4-time-taken"><span id="game-4-time">0</span> seconds</p>
+		</div>
+		
+		<div id="game-4-buttons" class="light-buttons">
+			<button id="game-4-bogo" onclick="bogoSolve(4)">Bogo Solve</button>
+		</div>
+	</div>
+</body>
