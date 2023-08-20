@@ -10,7 +10,7 @@ I cannot recommend trying to solve a 5x5 or higher board.
 Technically, there are 33.5million possible states for a 5x5 board
 Even if you take into account certain states are just rotations of others (which this does), it doesn't help much.
 
-However, one thing that I can say for certain, because I'm using a breadth first search, I can say with reasonable confidence that
+However, one thing that I can say with reasonable confidence, is that because I'm using a breadth first search
 when a solution does get found, it will be a solution with the least amount of moves possible.
 */
 
