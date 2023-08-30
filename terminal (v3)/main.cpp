@@ -77,13 +77,15 @@ bool getYesNo() {
 
 
 void doThreeByThree(LightsOutGrid& normal, LightsOutGrid& modded) {
-	std::cout << "Does the game use the modified ruleset? " << std::endl;;
+	std::cout << "Does the game use the modified ruleset? " << std::endl;
 	bool answer = getYesNo();
 	LightsOutGrid& board = (answer) ? modded : normal;
 
 	State stateToSolve = getStateToSolveFrom(9);
 
 	bool solution = board.getSolution(stateToSolve);
+
+	return;
 }
 
 
@@ -116,9 +118,9 @@ void doFiveByFive(LightsOutGrid& board) {
 void waitForInitialThreads(LightsOutGrid& board1, LightsOutGrid& board2, LightsOutGrid& board3) {
 	if (!board1.hasSolutions() && board2.hasSolutions() && board3.hasSolutions()) return;
 
-	board1.bruteForceSolutions();
-	board2.bruteForceSolutions();
-	board3.bruteForceSolutions();
+	board1.waitForThreads();
+	board2.waitForThreads();
+	board3.waitForThreads();
 
 	return;
 }
