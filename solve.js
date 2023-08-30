@@ -1,7 +1,11 @@
 "use strict";
+import chalk from "chalk";
 
 
 /*
+
+Web Version
+
 Brute force 'Solver'
 1x1, 2x2, 3x3 and 4x4 are all possible to find a solution for, no matter what the initial state is "quickly".
 
@@ -9,28 +13,35 @@ HOWEVER:
 I cannot recommend trying to solve a 5x5 or higher board.
 Technically, there are 33.5million possible states for a 5x5 board
 Even if you take into account certain states are just rotations of others (which this does), it doesn't help much.
+A 5x5 board would still only be brought down to around 2.1million states.
 
 However, one thing that I can say with reasonable confidence, is that because I'm using a breadth first search
 when a solution does get found, it will be a solution with the least amount of moves possible.
+
 */
 
 
 
 // Board Dimensions
-const width = 3;
-const height = 3;
-
+const boardSize = 4;
+const modded = true;
+const rotationEnabled = true;
 
 
 // Initial setup
-const totalTiles = width * height;
+const maxMemory = Math.pow(2, Math.pow(boardSize, 2));
+const totalTiles = boardSize * boardSize;
 const solvedState = "T".repeat(totalTiles);
-const splitRegex = new RegExp(`.{${width},${width}}`, "g");
 
 const memory = new Map();
-const queue = [];
-queue.push({ state: solvedState, parent: null, moves: 0, optimal: null });
-const nextInQueue = () => queue.shift();
+const queue = new Map();
+
+const nextInQueue = () => {
+	const next = queue.entries().next().value;
+	queue.delete(next[0]);
+
+	return next[1];
+};
 
 
 
@@ -74,16 +85,18 @@ function getRotations(_matrix) {
 
 /** Expands a state into a 2D array of booleans */
 function expandState(_state) {
-	const state = _state;
-	const rows = state.match(splitRegex) ?? [];
-	// console.log(rows)
+	const state = _state.split("");
 	const expandedState = [];
-	for(const row of rows){
+
+	for(let i = 0; i < boardSize; i++){
 		const expandedRow = [];
-		for(const char of row){
-			const bool = (char === "T");
-			expandedRow.push(!!bool);
+
+		for(let j = 0; j < boardSize; j++){
+			const index = i * boardSize + j;
+			const bool = state[index] === "T";
+			expandedRow.push(bool);
 		}
+
 		expandedState.push(expandedRow);
 	}
 	return expandedState;
@@ -111,26 +124,32 @@ function toggleTiles(state, row, col) {
 	const bottom = row + 1;
 	const left = col - 1;
 	const right = col + 1;
-	if(top >= 0){
-		expanded[top][col] = !expanded[top][col];
+
+	if(top >= 0) expanded[top][col] = !expanded[top][col];
+	if(bottom < boardSize) expanded[bottom][col] = !expanded[bottom][col];
+	if(left >= 0) expanded[row][left] = !expanded[row][left];
+	if(right < boardSize) expanded[row][right] = !expanded[row][right];
+
+	if(modded){
+		const topRight = top >= 0 && right < boardSize;
+		const topLeft = top >= 0 && left >= 0;
+		const bottomRight = bottom < boardSize && right < boardSize;
+		const bottomLeft = bottom < boardSize && left >= 0;
+
+		if(topRight) expanded[top][right] = !expanded[top][right];
+		if(topLeft) expanded[top][left] = !expanded[top][left];
+		if(bottomRight) expanded[bottom][right] = !expanded[bottom][right];
+		if(bottomLeft) expanded[bottom][left] = !expanded[bottom][left];
 	}
-	if(bottom < height){
-		expanded[bottom][col] = !expanded[bottom][col];
-	}
-	if(left >= 0){
-		expanded[row][left] = !expanded[row][left];
-	}
-	if(right < width){
-		expanded[row][right] = !expanded[row][right];
-	}
+
 	return shrinkState(expanded);
 }
 
 
 /** Produces a single permutation of a given state */
 function permutate(state, tile) {
-	const col = tile % width;
-	const row = Math.floor(tile / width);
+	const col = tile % boardSize;
+	const row = Math.floor(tile / boardSize);
 	return toggleTiles(state, row, col);
 }
 
@@ -148,31 +167,100 @@ function getPermutations(_state) {
 
 
 function doQueue(_state = solvedState) {
-	while(queue.length > 0){
-		const item = nextInQueue();
-		if(!item){
-			break;
-		}
-		const { state, moves, parent, optimal } = item;
-		const rotations = getRotations(expandState(state));
-		let isRotated = false;
-		for(const rotation of rotations){
-			if(memory.has(rotation)){
-				isRotated = true;
-				break;
+
+	queue.set(solvedState, { state: solvedState, parent: null, moves: 0, optimal: null });
+
+	if(rotationEnabled){
+		while(queue.size > 0){
+			const { state, moves, parent, optimal } = nextInQueue();
+
+			if(memory.has(state)) continue; // This shouldn't happen, but just in case
+			memory.set(state, { movesToSolve: moves, optimalMove: optimal, parentState: parent });
+
+			// console.log(`${state} | States: ${memory.size}, Queue: ${queue.size}`);
+
+			const permutations = getPermutations(state);
+			for(const perm of permutations){
+
+				const { permutation, tile } = perm;
+				if(memory.has(permutation) || queue.has(permutation)) continue;
+
+
+				const rotations = getRotations(expandState(permutation));
+
+				let rotatedPerm = false;
+				for(const rotation of rotations){
+					if(memory.has(rotation) || queue.has(rotation)){
+						rotatedPerm = true;
+						break;
+					}
+				}
+
+				if(rotatedPerm) continue;
+
+
+
+				queue.set(permutation, { state: permutation, parent: state, optimal: tile, moves: moves + 1 });
 			}
 		}
-		if(isRotated){
-			continue;
-		}
-		memory.set(state, { movesToSolve: moves, optimalMove: optimal, parentState: parent });
-		const permutations = getPermutations(state);
-		for(const perm of permutations){
-			const { permutation, tile } = perm;
-			queue.push({ state: permutation, parent: state, optimal: tile, moves: moves + 1 });
+	} else {
+		while(queue.size > 0){
+			const { state, moves, parent, optimal } = nextInQueue();
+
+			if(memory.has(state)) continue; // This shouldn't happen, but just in case
+			memory.set(state, { movesToSolve: moves, optimalMove: optimal, parentState: parent });
+
+			const permutations = getPermutations(state);
+
+
+			for(const perm of permutations){
+				const { permutation, tile } = perm;
+				if(memory.has(permutation) || queue.has(permutation)) continue;
+
+				queue.set(permutation, { state: permutation, parent: state, optimal: tile, moves: moves + 1 });
+			}
 		}
 	}
+
+	console.log("Done!");
 }
 
+console.log("Version 1.5");
+console.log("\nFinding solution...");
 
-// doQueue();
+console.time("Took");
+doQueue();
+console.timeEnd("Took");
+console.log(`\n\nMemory Size: ${chalk.yellow(memory.size)} | Max Memory: ${chalk.magenta(maxMemory)}`);
+const rotationsAreEnabled = (rotationEnabled) ? chalk.green("Enabled") : chalk.red("Disabled");
+const isModdedGame = (modded) ? chalk.green("True") : chalk.red("False");
+
+console.log(`Rotation: ${rotationsAreEnabled} | Modded: ${isModdedGame} | Board Size: ${chalk.blue(boardSize)}`);
+
+
+/*
+Version 1.5 Times
+
+3x3 Normal:		10ms (No Rotation)
+3x3 Normal:		9ms (With Rotation)
+
+3x3 Modded:		10ms (No Rotation)
+3x3 Modded:		8ms (With Rotation)
+
+
+
+4x4 Normal:		N/A (Many combinations are impossible to solve)
+4x4 Normal: 	N/A (Many combinations are impossible to solve)
+
+4x4 Modded:		1340ms (No Rotation)
+4x4 Modded:		490ms (With Rotation)
+
+
+
+5x5 Normal:		I refuse to test (No Rotation)
+5x5 Normal:		8m, 11s, 391ms (With Rotation)
+
+5x5 Modded:		N/A (Many combinations are impossible to solve)
+5x5 Modded:		N/A (Many combinations are impossible to solve)
+
+*/
